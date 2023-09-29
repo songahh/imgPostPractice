@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @WebServlet("/practice")
@@ -47,7 +47,7 @@ public class TestController extends HttpServlet {
         switch(action){
             case "show":
                 path = show(request, response);
-                //redirect(request, response, path);
+                forward(request, response, path);
                 break;
             default:
                 forward(request, response, path);
@@ -63,16 +63,21 @@ public class TestController extends HttpServlet {
             MultipartRequest mr = new MultipartRequest(request, DIR);
             mr.getFile("myImg");
 
+            String IMG_DIR = DIR + "/login-img.jpg";
 
+            Path path = Paths.get(IMG_DIR);
+            byte[] data = Files.readAllBytes(path);
+            System.out.println(data);
 
-            //System.out.println(mr.getFile("myImg"));
+            request.setAttribute("myImg", data);
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "/img/show.jsp";
+        return "img/show.jsp";
     }
 
     protected void forward(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException{
+        System.out.println(path);
         request.getRequestDispatcher(path).forward(request, response);
     }
 

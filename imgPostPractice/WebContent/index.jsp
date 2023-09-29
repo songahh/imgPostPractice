@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Enjoy Trip</title>
+	<title>이미지 보여주기</title>
 </head>
 <body>
     <h1>test 입니다.</h1>
@@ -54,11 +54,12 @@
             let request = {
                 method: "POST",
                 body: formData
-            }
+            };
 
             fetch(url, request)
-                .then((response) => {console.log(response);});
-
+                .then((response) => {
+                    location.href = "./img/show.jsp"
+                });
         };
     </script>
 </body>
