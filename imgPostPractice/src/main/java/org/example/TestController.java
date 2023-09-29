@@ -1,8 +1,10 @@
 package org.example;
 
 import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.MultipartResponse;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -11,17 +13,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.List;
 
 @WebServlet("/practice")
-@MultipartConfig(
-        fileSizeThreshold = 1024 * 1024,  // 파일 크기 임계값 (1MB)
-        maxFileSize = 1024 * 1024 * 5,   // 최대 파일 크기 (5MB)
-        maxRequestSize = 1024 * 1024 * 10 // 최대 요청 크기 (10MB)
-)
 public class TestController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -57,6 +57,18 @@ public class TestController extends HttpServlet {
 
     String show(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 
+        try {
+            String DIR = "/Users/songahh/project/imgPostPractice/imgPostPractice/WebContent/WEB-INF/upload";
+
+            MultipartRequest mr = new MultipartRequest(request, DIR);
+            mr.getFile("myImg");
+
+
+
+            //System.out.println(mr.getFile("myImg"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return "/img/show.jsp";
     }
 
