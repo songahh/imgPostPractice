@@ -19,6 +19,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.List;
 
 @WebServlet("/practice")
@@ -45,6 +46,10 @@ public class TestController extends HttpServlet {
         System.out.println("action>>>>>>>>>>>>>>>>>>"+action);
 
         switch(action){
+            case "save":
+                path = save(request, response);
+                redirect(request, response, path);
+                break;
             case "show":
                 path = show(request, response);
                 forward(request, response, path);
@@ -56,24 +61,30 @@ public class TestController extends HttpServlet {
     }
 
     String show(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        String DIR = "/Users/songahh/project/imgPostPractice/imgPostPractice/WebContent/WEB-INF/upload";
+        String IMG_DIR = DIR + "/login-img.jpg";
+
+        Path path = Paths.get(IMG_DIR);
+        byte[] data = Files.readAllBytes(path);
+        String base64Image = Base64.getEncoder().encodeToString(data);
+
+
+        request.setAttribute("myImg", base64Image);
+        return "img/show.jsp";
+    }
+
+    String save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 
         try {
             String DIR = "/Users/songahh/project/imgPostPractice/imgPostPractice/WebContent/WEB-INF/upload";
 
             MultipartRequest mr = new MultipartRequest(request, DIR);
             mr.getFile("myImg");
-
-            String IMG_DIR = DIR + "/login-img.jpg";
-
-            Path path = Paths.get(IMG_DIR);
-            byte[] data = Files.readAllBytes(path);
-            System.out.println(data);
-
-            request.setAttribute("myImg", data);
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "img/show.jsp";
+        //return "index.jsp";
+        return "/practice?action=show";
     }
 
     protected void forward(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException{

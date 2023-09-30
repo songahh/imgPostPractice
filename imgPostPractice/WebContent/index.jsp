@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="root" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -7,18 +8,16 @@
 	<title>이미지 보여주기</title>
 </head>
 <body>
-    <h1>test 입니다.</h1>
     <div>
+        <h1>test 입니다.</h1>
     	<div>사진을 올려주세요</div>
     	<form id="imgForm">
     		<input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)" />
-            <button onclick="postFile()">전송</button>
         </form>
-
+        <button onclick="postFile()">전송</button>
     </div>
     <div id="image-show">
     </div>
-
     <script>
         function loadFile(input) {
             var file = input.files[0];	//선택된 파일 가져오기
@@ -34,8 +33,8 @@
 
         	//이미지 source 가져오기
         	newImage.src = URL.createObjectURL(file);
-        	newImage.style.width = "70%";
-        	newImage.style.height = "70%";
+        	newImage.style.width = "30%";
+        	newImage.style.height = "30%";
         	//newImage.style.visibility = "hidden";   //버튼을 누르기 전까지는 이미지를 숨긴다
         	newImage.style.objectFit = "contain";
 
@@ -46,7 +45,7 @@
 
         function postFile(){
             let imgBlob = document.getElementById("chooseFile").files[0];
-            const url = '${root}/practice?action=show';
+            const url = '${root}/practice?action=save';
 
             let formData = new FormData();
             formData.append("myImg", imgBlob);
@@ -58,7 +57,7 @@
 
             fetch(url, request)
                 .then((response) => {
-                    location.href = "./img/show.jsp"
+                    location.href = response.url;
                 });
         };
     </script>
