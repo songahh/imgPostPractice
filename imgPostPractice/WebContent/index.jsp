@@ -56,7 +56,7 @@
 
             for(let i=0; i<imgIdx; ++i){
                 let imgBlob = imgFiles[i];
-                formData.append(`myImg\${i}`, imgBlob);
+                formData.append(`myImg\${i}`, new File([imgBlob], `myImg\${i}.jpg`));
                 console.log(`myImg\${i}`);
             }
             formData.append("imgSize", imgIdx);

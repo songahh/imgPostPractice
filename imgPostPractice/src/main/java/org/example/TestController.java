@@ -19,13 +19,17 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Base64;
 import java.util.List;
+import java.util.UUID;
 
 @WebServlet("/practice")
 public class TestController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+    private static final String DIR = "/Users/songahh/project/imgPostPractice/imgPostPractice/WebContent/WEB-INF/upload/";
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -61,28 +65,33 @@ public class TestController extends HttpServlet {
     }
 
     String show(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        String DIR = "/Users/songahh/project/imgPostPractice/imgPostPractice/WebContent/WEB-INF/upload";
-        String IMG_DIR = DIR + "/login-img.jpg";
 
-        Path path = Paths.get(IMG_DIR);
-        byte[] data = Files.readAllBytes(path);
-        String base64Image = Base64.getEncoder().encodeToString(data);
+        //Path path = Paths.get(DIR);
+        //byte[] data = Files.readAllBytes(path);
+        //String base64Image = Base64.getEncoder().encodeToString(data);
 
-
-        request.setAttribute("myImg", base64Image);
+        //request.setAttribute("myImg", base64Image);
         return "img/show.jsp";
     }
 
     String save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 
         try {
-            String DIR = "/Users/songahh/project/imgPostPractice/imgPostPractice/WebContent/WEB-INF/upload";
             MultipartRequest mr = new MultipartRequest(request, DIR);
-
             int imgSize = Integer.parseInt(mr.getParameter("imgSize"));
+            System.out.println(imgSize);
             for(int i=0; i<imgSize; ++i){
-                String name = "myImg"+i;
-                System.out.println(mr.getParameter(name));
+                String param = "myImg"+i;
+                File file = mr.getFile(param);
+
+                String orgName = file.getName();
+                String newName = "img" + UUID.randomUUID() + ".jpg";
+
+                Files.move(
+                        Paths.get(DIR+orgName),
+                        Paths.get(DIR+newName),
+                        StandardCopyOption.REPLACE_EXISTING
+                );
             }
         }catch (Exception e){
             e.printStackTrace();
