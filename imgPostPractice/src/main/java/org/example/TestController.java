@@ -77,9 +77,13 @@ public class TestController extends HttpServlet {
 
         try {
             String DIR = "/Users/songahh/project/imgPostPractice/imgPostPractice/WebContent/WEB-INF/upload";
-
             MultipartRequest mr = new MultipartRequest(request, DIR);
-            mr.getFile("myImg");
+
+            int imgSize = Integer.parseInt(mr.getParameter("imgSize"));
+            for(int i=0; i<imgSize; ++i){
+                String name = "myImg"+i;
+                System.out.println(mr.getParameter(name));
+            }
         }catch (Exception e){
             e.printStackTrace();
         }

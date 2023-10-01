@@ -9,9 +9,10 @@
 </head>
 <body>
     <c:if test="${not empty myImg}">
-    <div id="result">
+    <div id="result" contentEditable="true">
         <h1>결과입니다.</h1>
-        <img src="data:image/png;base64,${myImg}" alt="Image" />
+        <p>되니??</p>
+        <img src="data:image/png;base64,${myImg}" alt="Image" style="width:30%;height:30%;" />
     </div>
     </c:if>
 </body>
