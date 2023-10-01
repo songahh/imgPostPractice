@@ -1,27 +1,15 @@
 package org.example;
 
 import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.MultipartResponse;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
-
-import javax.imageio.ImageIO;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Base64;
-import java.util.List;
 import java.util.UUID;
 
 @WebServlet("/practice")
@@ -80,6 +68,11 @@ public class TestController extends HttpServlet {
             MultipartRequest mr = new MultipartRequest(request, DIR);
             int imgSize = Integer.parseInt(mr.getParameter("imgSize"));
             System.out.println(imgSize);
+
+            String tc = mr.getParameter("text");
+            System.out.println(tc);
+
+
             for(int i=0; i<imgSize; ++i){
                 String param = "myImg"+i;
                 File file = mr.getFile(param);

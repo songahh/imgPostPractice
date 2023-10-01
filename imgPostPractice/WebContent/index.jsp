@@ -54,12 +54,18 @@
             const url = '${root}/practice?action=save';
             let formData = new FormData();
 
+            let tc = document.getElementById("editableDiv").textContent;
+            formData.append("text", tc);
+
+
             for(let i=0; i<imgIdx; ++i){
                 let imgBlob = imgFiles[i];
                 formData.append(`myImg\${i}`, new File([imgBlob], `myImg\${i}.jpg`));
                 console.log(`myImg\${i}`);
             }
             formData.append("imgSize", imgIdx);
+
+
 
             let request = {
                 method: "POST",
